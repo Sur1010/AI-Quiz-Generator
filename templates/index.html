@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Quiz Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 AI Quiz Generator</h1>
+            <p>Transform any text into comprehensive, multi-level quiz questions</p>
+        </div>
+
+        <div class="main-content">
+            <div id="textInputSection">
+
+                <div class="input-section">
+                    <h2>📁 Upload Your File</h2>
+                    
+                    <!-- File Upload Section -->
+                    <div class="upload-section">
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-icon">🤖</div>
+                            <p>Upload your file for AI-powered quiz generation</p>
+                            <button type="button" id="uploadButton">Choose File</button>
+                            <p class="file-types">Supported: PDF, DOCX, TXT (Max 50MB)</p>
+                            <p class="ai-notice">✨ Requires OpenAI API key for GPT analysis</p>
+                            <input type="file" id="fileInput" accept=".pdf,.docx,.txt" style="display: none;">
+                        </div>
+                        <div id="fileStatus" class="file-status" style="display: none;"></div>
+                    </div>
+                    
+                    
+                    <div class="button-group" style="display: none;">
+                        <button id="startQuiz" class="btn btn-primary">
+                            🎯 Start Interactive Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="quizSection" style="display: none;">
+                <div class="quiz-header">
+                    <h2>🧠 Interactive Quiz</h2>
+                    <div class="quiz-progress">
+                        <span id="questionCounter">Question 1 of 10</span>
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="currentQuestion" class="current-question">
+                    <!-- Question content will be inserted here -->
+                </div>
+
+                <div class="quiz-controls">
+                    <button id="submitAnswer" class="btn btn-primary" disabled>
+                        Submit Answer
+                    </button>
+                    <button id="nextQuestion" class="btn btn-secondary" style="display: none;">
+                        Next Question
+                    </button>
+                    <button id="finishQuiz" class="btn btn-primary" style="display: none;">
+                        Finish Quiz
+                    </button>
+                </div>
+
+                <div id="answerFeedback" class="answer-feedback" style="display: none;">
+                    <!-- Feedback will be shown here -->
+                </div>
+            </div>
+
+            <div id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2>🎉 Quiz Results</h2>
+                </div>
+                <div id="scoreDisplay" class="score-display">
+                    <!-- Results will be displayed here -->
+                </div>
+                <div class="results-actions">
+                    <button id="restartQuiz" class="btn btn-primary">
+                        🔄 Take Quiz Again
+                    </button>
+                    <button id="newQuiz" class="btn btn-secondary">
+                        📝 Create New Quiz
+                    </button>
+                </div>
+            </div>
+
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>Analyzing text and generating quiz questions...</p>
+            </div>
+
+            <div id="error" class="error" style="display: none;"></div>
+
+            <div id="results" class="results">
+                <div id="interactiveQuiz" style="display: none;">
+                    <div class="quiz-section">
+                        <h3>🎯 Multiple Choice Questions</h3>
+                        <div id="mcqQuestions"></div>
+                    </div>
+
+                    <div class="quiz-section">
+                        <h3>✅ True/False Questions</h3>
+                        <div id="tfQuestions"></div>
+                    </div>
+
+                    <div class="quiz-section">
+                        <h3>💭 Open-Ended Questions</h3>
+                        <div id="openQuestions"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
