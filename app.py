@@ -47,10 +47,57 @@ def upload_file():
             api_key = os.getenv('OPENAI_API_KEY')
             
             if not api_key:
-                return jsonify({'error': 'OpenAI API key is required. Please set OPENAI_API_KEY environment variable.'}), 400
+                # Fallback mode for testing without API key
+                # Clean up uploaded file
+                if os.path.exists(filepath):
+                    os.remove(filepath)
+                
+                # Create a simple demo quiz for testing
+                session_id = str(uuid.uuid4())
+                demo_mcq = [{
+                    'id': 'demo_mcq_1',
+                    'question': 'What is the main topic of this document?',
+                    'options': ['Topic A', 'Topic B', 'Topic C', 'Topic D'],
+                    'correct_answer': 0,
+                    'difficulty': 'Easy',
+                    'type': 'mcq'
+                }]
+                
+                demo_tf = [{
+                    'id': 'demo_tf_1',
+                    'statement': 'This is a test document for demonstration purposes.',
+                    'correct_answer': True,
+                    'difficulty': 'Easy',
+                    'type': 'true_false'
+                }]
+                
+                quiz_sessions[session_id] = {
+                    'text': 'Demo text for testing purposes',
+                    'mcq_questions': demo_mcq,
+                    'tf_questions': demo_tf,
+                    'user_answers': {},
+                    'score': 0,
+                    'completed': False
+                }
+                
+                return jsonify({
+                    'session_id': session_id,
+                    'mcq_questions': demo_mcq,
+                    'tf_questions': demo_tf,
+                    'total_questions': len(demo_mcq) + len(demo_tf),
+                    'filename': filename,
+                    'analysis_method': 'Demo Mode (No API Key)',
+                    'warning': 'Running in demo mode. Set OPENAI_API_KEY for full functionality.'
+                })
             
             # Initialize quiz generator with GPT only
-            generator = QuizGenerator(api_key=api_key)
+            try:
+                generator = QuizGenerator(api_key=api_key)
+            except Exception as e:
+                # Clean up uploaded file
+                if os.path.exists(filepath):
+                    os.remove(filepath)
+                return jsonify({'error': f'Error initializing OpenAI client: {str(e)}'}), 400
             
             try:
                 # Extract text from file
